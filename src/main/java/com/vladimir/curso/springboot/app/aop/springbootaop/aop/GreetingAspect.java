@@ -20,6 +20,6 @@ public class GreetingAspect {
         String method = joinPoint.getSignature().getName();
         String args = Arrays.toString(joinPoint.getArgs()); //Esto regresa un objeto pero con el arrays lo transformamos
         logger.info("Antes: " + method + " con los argumentos:" + args);
-    } 
+    }  
     
 }
