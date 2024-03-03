@@ -51,7 +51,22 @@ public class GreetingAspect {
         logger.info("Despues de lanzar la excepcion: " + method + " con los argumentos:" + args);
     } 
 
-    
+    @Around("execution(String com.vladimir.curso.springboot.app.aop.springbootaop.services.GreetingService.sayHello(..))")
+    public Object loggerAround(ProceedingJoinPoint joinPoint) throws Throwable{
+        String method =  joinPoint.getSignature().getName();
+        String args =Arrays.toString(joinPoint.getArgs());
+        Object result = null;
+        try {
+            logger.info("El metodo " + method + "() con los parametros: " + args);  //BEFORE
+            result = joinPoint.proceed();
+            logger.info("El metodo " + method + "() retorna el resultado: " + result); //AFTER
+            return result;
+        } catch (Throwable e) {
+            logger.error("Error en la llamada del metodo " + method + "()");
+            throw e;
+        }
+        //return result;
+    }
 
 
 }
