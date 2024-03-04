@@ -10,7 +10,6 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
@@ -22,13 +21,8 @@ import org.springframework.stereotype.Component;
 public class GreetingAspect {
     private Logger logger =  LoggerFactory.getLogger(this.getClass()); //? Registra eventos
 
-                                                                                            //Si solo se pone la interfaz, engloba mas |  el (..) significa con los argumentos que sean
-    @Pointcut("execution(String com.vladimir.curso.springboot.app.aop.springbootaop.services.GreetingService.*(..))") //? Esto es un punto de corte general y se reutiliza en los demas aspectos para no repetir
-    private void greetingLoggerPointCut(){
-        
-    }
                     ////d |* con el asterisco regresa cualquier cosa                             *             *     
-    @Before("greetingLoggerPointCut()")   
+    @Before("GreetingServicePointcuts.greetingLoggerPointCut()")   
     public void loggerBefore(JoinPoint joinPoint){          // une la ejecucion de un aspecto a la llamada de un metodo
 
         String method = joinPoint.getSignature().getName();
@@ -36,7 +30,7 @@ public class GreetingAspect {
         logger.info("Order 2, Before: " + method + " con los argumentos:" + args);
     } 
 
-    @After("greetingLoggerPointCut()")   //
+    @After("GreetingServicePointcuts.greetingLoggerPointCut()")   //
     public void loggerAfter(JoinPoint joinPoint){          // une la ejecucion de un aspecto a la llamada de un metodo
     
         String method = joinPoint.getSignature().getName();
@@ -44,7 +38,7 @@ public class GreetingAspect {
         logger.info("Order 2, After: " + method + " con los argumentos:" + args);
     } 
 
-    @AfterReturning("greetingLoggerPointCut()")   //
+    @AfterReturning("GreetingServicePointcuts.greetingLoggerPointCut()")   //
     public void loggerAfterRet(JoinPoint joinPoint){          // une la ejecucion de un aspecto a la llamada de un metodo
     
         String method = joinPoint.getSignature().getName();
@@ -60,7 +54,7 @@ public class GreetingAspect {
         logger.info("After throwing exception: " + method + " con los argumentos:" + args);
     } 
 
-    @Around("greetingLoggerPointCut()")
+    @Around("GreetingServicePointcuts.greetingLoggerPointCut()")
     public Object loggerAround(ProceedingJoinPoint joinPoint) throws Throwable{
         String method =  joinPoint.getSignature().getName();
         String args =Arrays.toString(joinPoint.getArgs());
